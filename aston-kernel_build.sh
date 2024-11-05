@@ -7,7 +7,8 @@ sed -i "s/Version:.*/Version: ${_kernel_version}/" ../linux-oneplus-aston/DEBIAN
 
 cat arch/arm64/boot/Image arch/arm64/boot/dts/qcom/sm8550-oneplus-aston.dtb > Image_w_dtb
 gzip Image_w_dtb
-mkbootimg --header_version 4 --base 0x0 --kernel ./Image_w_dtb.gz -o boot.img
+chmod +x ../mkbootimg
+../mkbootimg --header_version 4 --base 0x0 --kernel ./Image_w_dtb.gz -o boot.img
 
 make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=../linux-oneplus-aston modules_install
 rm ../linux-oneplus-aston/lib/modules/**/build
