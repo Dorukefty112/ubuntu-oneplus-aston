@@ -1,4 +1,5 @@
 cd $1
+git lfs pull
 git clone https://github.com/jiganomegsdfdf/aston-mainline.git --depth 1 linux
 cd linux
 make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig sm8550.config
