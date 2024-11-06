@@ -46,7 +46,7 @@ jobs:
         run: sudo apt update && sudo apt install unzip build-essential gcc-aarch64-linux-gnu bc flex bison 7zip kmod bash cpio binutils tar git wget dpkg libssl-dev python3 python-is-python3
 
       - name: Build rootfs
-        run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ matrix.kernel }}
+        run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ matrix.kernel }} ${{ github.workspace }}
 
       - name: Upload rootfs.7z
         uses: actions/upload-artifact@v4.0.0
