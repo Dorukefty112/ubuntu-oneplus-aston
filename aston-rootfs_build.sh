@@ -57,11 +57,9 @@ chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 
 chroot rootdir systemctl enable systemd-growfs-root.service
 
-cp $3/oneplus-aston-debs_$2/*/*/*.deb rootdir/tmp/
-cp $3/oneplus-aston-debs_$2/*/*.deb rootdir/tmp/
-cp $3/oneplus-aston-debs_$2/*.deb rootdir/tmp/
-chroot rootdir dpkg -i /tmp/*.deb
-rm rootdir/tmp/*.deb
+cp $3/oneplus-aston-debs_$2/*.deb rootdir/
+chroot rootdir dpkg -i /*.deb
+rm rootdir/*.deb
 
 mkdir rootdir/var/lib/gdm
 touch rootdir/var/lib/gdm/run-initial-setup
