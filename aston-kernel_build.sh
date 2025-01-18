@@ -12,8 +12,9 @@ gzip Image_w_dtb
 chmod +x $1/mkbootimg
 $1/mkbootimg --header_version 4 --base 0x0 --kernel $1/linux/Image_w_dtb.gz -o $1/boot.img
 
-make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=$1/linux-oneplus-aston modules_install
-rm $1/linux-oneplus-aston/lib/modules/**/build
+rm $1/linux-oneplus-aston/usr/dummy
+make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- INSTALL_MOD_PATH=$1/linux-oneplus-aston/usr modules_install
+rm $1/linux-oneplus-aston/usr/lib/modules/**/build
 cd $1
 rm -rf linux
 
