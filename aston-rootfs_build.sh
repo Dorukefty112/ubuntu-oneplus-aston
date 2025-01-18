@@ -59,8 +59,10 @@ echo "PARTLABEL=win / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir
 
 chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 
-find $3/.. -name '*aston*.deb' -exec cp "{}" $3/rootdir/  \;
-chroot rootdir dpkg -i /*.deb
+find $3/.. -name 'firmware-oneplus-aston.deb' -exec cp "{}" $3/rootdir/  \;
+find $3/.. -name 'linux-oneplus-aston.deb' -exec cp "{}" $3/rootdir/  \;
+chroot rootdir dpkg -i firmware-oneplus-aston.deb
+chroot rootdir dpkg -i linux-oneplus-aston.deb
 rm -rf $3/rootdir/*.deb
 
 mkdir rootdir/var/lib/gdm
