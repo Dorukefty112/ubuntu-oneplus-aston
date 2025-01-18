@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
             matrix:
-                version: [6.11.0]
+                version: [6.12]
     steps:
       - uses: actions/checkout@v4
         
@@ -16,7 +16,7 @@ jobs:
         run: sudo apt update && sudo apt install build-essential gcc-aarch64-linux-gnu bc flex bison 7zip kmod bash cpio binutils tar git wget dpkg libssl-dev python3 python-is-python3
 
       - name: Build kernel
-        run: sudo sh aston-kernel_build.sh ${{ github.workspace }}
+        run: sudo sh aston-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
 
       - name: Upload deb packages
         uses: actions/upload-artifact@v4.0.0
