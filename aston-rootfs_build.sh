@@ -8,6 +8,8 @@ fi
 
 VERSION="24.10"
 
+cd $3
+
 truncate -s 5G rootfs.img
 mkfs.ext4 rootfs.img
 mkdir rootdir
@@ -57,9 +59,13 @@ echo "PARTLABEL=win / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir
 
 chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 
-cp $3/oneplus-aston-debs_$2/*.deb rootdir/
-chroot rootdir dpkg -i /*.deb
-rm rootdir/*.deb
+cp -rf $3/oneplus-aston-debs_$2/firmware-oneplus-aston.deb $3/rootdir/firmware-oneplus-aston.deb
+cp -rf $3/oneplus-aston-debs_$2/firmware-oneplus-aston.deb/* $3/rootdir/firmware-oneplus-aston.deb
+cp -rf $3/oneplus-aston-debs_$2/linux-oneplus-aston.deb $3/rootdir/linux-oneplus-aston.deb
+cp -rf $3/oneplus-aston-debs_$2/linux-oneplus-aston.deb/* $3/rootdir/linux-oneplus-aston.deb
+chroot rootdir dpkg -i /firmware-oneplus-aston.deb
+chroot rootdir dpkg -i /linux-oneplus-aston.deb
+rm -rf $3/rootdir/*.deb
 
 mkdir rootdir/var/lib/gdm
 touch rootdir/var/lib/gdm/run-initial-setup
