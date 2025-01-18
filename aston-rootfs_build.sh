@@ -8,7 +8,7 @@ fi
 
 VERSION="24.10"
 
-truncate -s 4G rootfs.img
+truncate -s 5G rootfs.img
 mkfs.ext4 rootfs.img
 mkdir rootdir
 mount -o loop rootfs.img rootdir
@@ -45,7 +45,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 chroot rootdir apt update
 chroot rootdir apt upgrade -y
-chroot rootdir apt install -y bash-completion sudo ssh nano rmtfs u-boot-tools- cloud-init- wireless-regdb- $1
+chroot rootdir apt install -y bash-completion sudo ssh nano rmtfs u-boot-tools- cloud-init- wireless-regdb- libreoffice*- transmission*- remmina*- $1
 
 echo "[Daemon]
 DeviceScale=2" | tee rootdir/etc/plymouth/plymouthd.conf
