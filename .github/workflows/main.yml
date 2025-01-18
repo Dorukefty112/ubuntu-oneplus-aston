@@ -18,16 +18,22 @@ jobs:
       - name: Build kernel
         run: sudo sh aston-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
 
-      - name: Upload deb packages
+      - name: Upload firmware.deb
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: oneplus-aston-debs_${{ matrix.version }}
-          path: ${{ github.workspace }}/*.deb
+          name: firmware-oneplus-aston_${{ matrix.version }}
+          path: ${{ github.workspace }}/firmware-oneplus-aston.deb
+
+      - name: Upload linux.deb
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: linux-oneplus-aston_${{ matrix.version }}
+          path: ${{ github.workspace }}/linux-oneplus-aston.deb
 
       - name: Upload boot.img
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: oneplus-aston-boot_${{ matrix.version }}.img
+          name: boot-oneplus-aston_${{ matrix.version }}.img
           path: ${{ github.workspace }}/boot.img
           
   rootfs:
@@ -41,7 +47,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          pattern: oneplus-aston-debs*
+          pattern: firmware-oneplus-aston*
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: linux-oneplus-aston*
       - name: Install Dependencies
         run: sudo apt update && sudo apt install unzip build-essential gcc-aarch64-linux-gnu bc flex bison 7zip kmod bash cpio binutils tar git wget dpkg libssl-dev python3 python-is-python3
 
