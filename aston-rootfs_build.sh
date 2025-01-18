@@ -8,7 +8,7 @@ fi
 
 VERSION="24.10"
 
-truncate -s 5G rootfs.img
+truncate -s 4G rootfs.img
 mkfs.ext4 rootfs.img
 mkdir rootdir
 mount -o loop rootfs.img rootdir
@@ -53,9 +53,9 @@ DeviceScale=2" | tee rootdir/etc/plymouth/plymouthd.conf
 echo "[org.gnome.desktop.interface]
 scaling-factor=2" | tee rootdir/usr/share/glib-2.0/schemas/93_hidpi.gschema.override
 
-chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
+echo "PARTLABEL=win / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
 
-chroot rootdir systemctl enable systemd-growfs-root.service
+chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 
 cp $3/oneplus-aston-debs_$2/*.deb rootdir/
 chroot rootdir dpkg -i /*.deb
