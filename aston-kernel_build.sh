@@ -18,4 +18,3 @@ cd $1
 rm -rf linux
 
 dpkg-deb --build --root-owner-group linux-oneplus-aston
-dpkg-deb --build --root-owner-group firmware-oneplus-aston

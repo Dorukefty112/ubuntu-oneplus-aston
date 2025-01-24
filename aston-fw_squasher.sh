@@ -11,3 +11,6 @@ cat $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.b23_1 $1/
 cat $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.b24_1 $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.b24_2 > $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.b24
 /usr/local/bin/pil-squasher $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.mbn $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.mdt
 rm -rf $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.mdt $1/firmware-oneplus-aston/usr/lib/firmware/qcom/sm8550/aston/modem.b*
+
+cd $1
+dpkg-deb --build --root-owner-group firmware-oneplus-aston
