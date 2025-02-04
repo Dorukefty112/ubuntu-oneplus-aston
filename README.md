@@ -11,7 +11,7 @@ Actually, just go to the "Actions" tab, find one of latest builds and download f
 - Unpack all .zip you downloaded in one folder
 - Open terminal and go to place where you unpacked all .zip's
 - Run "sudo dpkg -i *-oneplus-aston.deb"
-- (If using flashing instead of **fastboot boot**) You can flash new boot image, using "dd if="**path to boot.img**" of=/dev/block/by-name/boot_**('a' or 'b')**"
+- (If using flashing instead of **fastboot boot**) You can flash new boot image, using "dd if="**path to boot.img**" of=/dev/disk/by-partlabel/boot_**('a' or 'b')**"
 - Reboot using new image
   
 ## Install steps
