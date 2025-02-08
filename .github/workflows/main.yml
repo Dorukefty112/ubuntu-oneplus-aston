@@ -9,9 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        
-      - name: Install Dependencies
-        run: sudo apt update && sudo apt install dpkg
 
       - name: Pack Alsa Use Case Configuration into .deb
         run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-oneplus-aston
@@ -28,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
         
       - name: Install Dependencies
-        run: sudo apt update && sudo apt install build-essential gcc-aarch64-linux-gnu git wget dpkg
+        run: sudo apt update && sudo apt install gcc make git wget dpkg
 
       - name: Squash firmwares to .mbn
         run: sudo sh aston-fw_squasher.sh ${{ github.workspace }}
