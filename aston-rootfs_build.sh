@@ -47,6 +47,12 @@ export DEBIAN_FRONTEND=noninteractive
 
 chroot rootdir apt update
 chroot rootdir apt upgrade -y
+chroot rootdir apt install -y python3-defer
+
+echo "#!/bin/bash
+exit 0" | tee rootdir/var/lib/dpkg/info/python3-defer.postinst
+chroot rootdir dpkg --configure python3-defer
+
 chroot rootdir apt install -y bash-completion sudo ssh nano rmtfs u-boot-tools- cloud-init- wireless-regdb- libreoffice*- transmission*- remmina*- $1
 
 echo "[Daemon]
