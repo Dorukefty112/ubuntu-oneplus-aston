@@ -76,6 +76,8 @@ rm -rf $3/rootdir/*.deb
 mkdir rootdir/var/lib/gdm
 touch rootdir/var/lib/gdm/run-initial-setup
 
+chroot rootdir pw-metadata -n settings 0 clock.force-quantum 2048
+
 chroot rootdir apt clean
 
 if uname -m | grep -q aarch64
