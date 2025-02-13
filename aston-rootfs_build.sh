@@ -63,6 +63,8 @@ scaling-factor=2" | tee rootdir/usr/share/glib-2.0/schemas/93_hidpi.gschema.over
 
 echo "PARTLABEL=win / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
 
+echo 'ACTION=="add", SUBSYSTEM=="misc", KERNEL=="udmabuf", TAG+="uaccess"' | tee rootdir/etc/udev/rules.d/99-oneplus-aston.rules
+
 chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 
 find $3/.. -name 'alsa-oneplus-aston.deb' -exec cp "{}" $3/rootdir/  \;
