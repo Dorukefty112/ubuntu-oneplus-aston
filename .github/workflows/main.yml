@@ -88,12 +88,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: between_${{ matrix.desktop }}
-          path: rootfs.img
+          path: rootfs.7z
           compression-level: 0
 
   rootfs-packager:
     runs-on: ubuntu-24.04-arm
-    needs: [kernel, alsa, firmware, rootfs]
+    needs: [kernel, alsa, firmware]
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
