@@ -6,6 +6,7 @@ on:
 jobs:
 
   alsa:
+    needs: rootfs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +21,7 @@ jobs:
           path: ${{ github.workspace }}/alsa-oneplus-aston.deb
 
   firmware:
+    needs: rootfs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,6 +99,7 @@ jobs:
                 desktop: [ubuntu-desktop]
                 kernel: [6.13]
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           pattern: between_${{ matrix.desktop }}*   
