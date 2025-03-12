@@ -64,3 +64,4 @@ umount rootdir
 
 rm -d rootdir
 
+7z a rootfs.7z rootfs.img
