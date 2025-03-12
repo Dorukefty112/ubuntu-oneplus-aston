@@ -1,6 +1,8 @@
 #!/bin/sh
 
-find $1/.. -name 'rootfs.img' -exec mv "{}" $1/  \;
+find $1/.. -name 'rootfs.7z' -exec mv "{}" $1/  \;
+
+7z x rootfs.7z
 
 mkdir rootdir
 mount -o loop rootfs.img rootdir
