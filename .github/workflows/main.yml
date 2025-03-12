@@ -14,7 +14,7 @@ jobs:
         run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-oneplus-aston
 
       - name: Upload alsa.deb
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: alsa-oneplus-aston
           path: ${{ github.workspace }}/alsa-oneplus-aston.deb
@@ -31,7 +31,7 @@ jobs:
         run: sudo sh aston-fw_squasher.sh ${{ github.workspace }}
 
       - name: Upload firmware.deb
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: firmware-oneplus-aston
           path: ${{ github.workspace }}/firmware-oneplus-aston.deb
@@ -52,32 +52,54 @@ jobs:
         run: sudo sh aston-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
 
       - name: Upload linux.deb
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: linux-oneplus-aston_${{ matrix.version }}
           path: ${{ github.workspace }}/linux-oneplus-aston.deb
 
       - name: Upload 16G RAM boot.img
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: boot-oneplus-aston_${{ matrix.version }}_16G.img
           path: ${{ github.workspace }}/boot16G.img
 
       - name: Upload 12G RAM boot.img
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: boot-oneplus-aston_${{ matrix.version }}_12G.img
           path: ${{ github.workspace }}/boot12G.img
 
   rootfs:
     runs-on: ubuntu-24.04-arm
-    needs: [kernel, alsa, firmware]
+    strategy:
+            matrix:
+                desktop: [ubuntu-desktop]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install unzip bash tar git wget dpkg
+
+      - name: Build rootfs
+        run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
+
+      - name: Upload rootfs.img
+        uses: actions/upload-artifact@v4
+        with:
+          name: between_${{ matrix.desktop }}
+          path: rootfs.img
+          compression-level: 0
+
+  rootfs-packager:
+    runs-on: ubuntu-24.04-arm
+    needs: [kernel, alsa, firmware, rootfs]
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
                 kernel: [6.13]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: between_${{ matrix.desktop }}*   
       - uses: actions/download-artifact@v4
         with:
           pattern: alsa-oneplus-aston*
@@ -86,16 +108,24 @@ jobs:
           pattern: firmware-oneplus-aston*
       - uses: actions/download-artifact@v4
         with:
-          pattern: linux-oneplus-aston*
+          pattern: linux-oneplus-aston_${{ matrix.kernel }}
       - name: Install Dependencies
         run: sudo apt update && sudo apt install unzip 7zip bash tar git wget dpkg
 
-      - name: Build rootfs
-        run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ matrix.kernel }} ${{ github.workspace }}
-
+      - name: Package rootfs
+        run: sudo sh aston-rootfs_package.sh ${{ github.workspace }}
+        
       - name: Upload rootfs.7z
-        uses: actions/upload-artifact@v4.0.0
+        uses: actions/upload-artifact@v4
         with:
           name: rootfs_${{ matrix.desktop }}_${{ matrix.kernel }}
           path: rootfs.7z
           compression-level: 0
+          
+  cleaner:
+    runs-on: ubuntu-24.04-arm
+    needs: rootfs-packager
+    steps:
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: between_${{ matrix.desktop }}*
