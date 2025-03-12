@@ -4,7 +4,7 @@
 This repo contians **Base Guide for installation/upgrading** and **Scripts for automatic building of Ubuntu RootFS, Mainline Kernel, Firmware package, ALSA configs** for OnePlus 12R/Ace 3
 
 # Where do i get needed files?
-Just go to the "Actions" tab, open most recent build and download files named **rootfs_(Desktop Environment)_(Kernel version)** and **boot-oneplus-aston_(Kernel version).img**
+Just go to the "Actions" tab, open most recent build and download files named **rootfs_(Desktop Environment)_(Kernel version)** and **boot-oneplus-aston_(Kernel version)_(Phone RAM Size).img**
 <br>For upgrading - instead, download all files available, **except for rootfs**
 
 ## Upgrading steps (From running Ubuntu)

@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        
+
       - name: Install Dependencies
         run: sudo apt update && sudo apt install gcc make git wget dpkg
 
@@ -44,10 +44,10 @@ jobs:
                 version: [6.13]
     steps:
       - uses: actions/checkout@v4
-        
+
       - name: Install Dependencies
         run: sudo apt update && sudo apt install build-essential gcc-aarch64-linux-gnu bc flex bison 7zip kmod bash cpio binutils tar git wget dpkg libssl-dev python3 python-is-python3
-        
+
       - name: Build kernel
         run: sudo sh aston-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
 
@@ -57,12 +57,18 @@ jobs:
           name: linux-oneplus-aston_${{ matrix.version }}
           path: ${{ github.workspace }}/linux-oneplus-aston.deb
 
-      - name: Upload boot.img
+      - name: Upload 16G RAM boot.img
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: boot-oneplus-aston_${{ matrix.version }}.img
-          path: ${{ github.workspace }}/boot.img
-          
+          name: boot-oneplus-aston_${{ matrix.version }}_16G.img
+          path: ${{ github.workspace }}/boot16G.img
+
+      - name: Upload 12G RAM boot.img
+        uses: actions/upload-artifact@v4.0.0
+        with:
+          name: boot-oneplus-aston_${{ matrix.version }}_12G.img
+          path: ${{ github.workspace }}/boot12G.img
+
   rootfs:
     runs-on: ubuntu-24.04-arm
     needs: [kernel, alsa, firmware]
