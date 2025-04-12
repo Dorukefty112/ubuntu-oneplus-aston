@@ -139,7 +139,7 @@ jobs:
         run: sudo apt update && sudo apt install unzip 7zip bash tar git wget dpkg
 
       - name: Package rootfs
-        run: sudo sh aston-rootfs_package.sh ${{ github.workspace }}
+        run: sudo sh aston-rootfs_package.sh ${{ github.workspace }} ${{ matrix.android }}
         
       - name: Upload rootfs.7z
         uses: actions/upload-artifact@v4

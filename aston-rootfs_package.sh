@@ -21,7 +21,7 @@ find $1/.. -name 'alsa-oneplus-aston.deb' -exec cp "{}" $1/rootdir/  \;
 find $1/.. -name 'firmware-oneplus-aston*.deb' -exec cp "{}" $1/rootdir/  \;
 find $1/.. -name 'linux-oneplus-aston.deb' -exec cp "{}" $1/rootdir/  \;
 chroot rootdir dpkg -i alsa-oneplus-aston.deb
-chroot rootdir dpkg -i firmware-oneplus-aston*.deb
+chroot rootdir dpkg -i firmware-oneplus-aston-a$2.deb
 chroot rootdir dpkg -i linux-oneplus-aston.deb
 rm -rf $1/rootdir/*.deb
 
