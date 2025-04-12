@@ -4,46 +4,11 @@ on:
   workflow_dispatch:
 
 jobs:
-
-  alsa:
-    needs: rootfs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Pack Alsa Use Case Configuration into .deb
-        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-oneplus-aston
-
-      - name: Upload alsa.deb
-        uses: actions/upload-artifact@v4
-        with:
-          name: alsa-oneplus-aston
-          path: ${{ github.workspace }}/alsa-oneplus-aston.deb
-
-  firmware:
-    needs: rootfs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Dependencies
-        run: sudo apt update && sudo apt install gcc make git wget dpkg
-
-      - name: Squash firmwares to .mbn
-        run: sudo sh aston-fw_squasher.sh ${{ github.workspace }}
-
-      - name: Upload firmware.deb
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware-oneplus-aston
-          path: ${{ github.workspace }}/firmware-oneplus-aston.deb
-
-
   kernel:
     runs-on: ubuntu-24.04-arm
     strategy:
             matrix:
-                version: [6.13]
+                version: [6.14]
     steps:
       - uses: actions/checkout@v4
 
@@ -97,13 +62,65 @@ jobs:
           path: rootfs.7z
           compression-level: 0
 
+  alsa:
+    needs: rootfs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pack Alsa Use Case Configuration into .deb
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-oneplus-aston
+
+      - name: Upload alsa.deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: alsa-oneplus-aston
+          path: ${{ github.workspace }}/alsa-oneplus-aston.deb
+
+  firmware-a15:
+    needs: rootfs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install gcc make git wget dpkg
+
+      - name: Squash firmwares to .mbn
+        run: sudo sh aston-fw_squasher-a15.sh ${{ github.workspace }}
+
+      - name: Upload firmware.deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-oneplus-aston-a15
+          path: ${{ github.workspace }}/firmware-oneplus-aston-a15.deb
+
+  firmware-a14:
+    needs: rootfs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install gcc make git wget dpkg
+
+      - name: Squash firmwares to .mbn
+        run: sudo sh aston-fw_squasher-a14.sh ${{ github.workspace }}
+
+      - name: Upload firmware.deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-oneplus-aston-a14
+          path: ${{ github.workspace }}/firmware-oneplus-aston-a14.deb
+
   rootfs-packager:
     runs-on: ubuntu-24.04-arm
-    needs: [kernel, alsa, firmware]
+    needs: [kernel, alsa, firmware-a14, firmware-a15]
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
-                kernel: [6.13]
+                kernel: [6.14]
+                android: [14,15]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -114,7 +131,7 @@ jobs:
           pattern: alsa-oneplus-aston*
       - uses: actions/download-artifact@v4
         with:
-          pattern: firmware-oneplus-aston*
+          pattern: firmware-oneplus-aston-a${{ matrix.android }}*
       - uses: actions/download-artifact@v4
         with:
           pattern: linux-oneplus-aston_${{ matrix.kernel }}
@@ -127,7 +144,7 @@ jobs:
       - name: Upload rootfs.7z
         uses: actions/upload-artifact@v4
         with:
-          name: rootfs_${{ matrix.desktop }}_${{ matrix.kernel }}
+          name: rootfs_${{ matrix.desktop }}_${{ matrix.kernel }}_A${{ matrix.android }}
           path: rootfs.7z
           compression-level: 0
           
@@ -137,4 +154,4 @@ jobs:
     steps:
       - uses: geekyeggo/delete-artifact@v5
         with:
-          name: between_${{ matrix.desktop }}*
+          name: between_*

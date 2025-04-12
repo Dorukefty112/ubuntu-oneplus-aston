@@ -6,7 +6,7 @@ This repo contians **Base Guide for installation/upgrading** and **Scripts for a
 ### [**Project status**](https://github.com/users/jiganomegsdfdf/projects/3/views/1)
 
 # Where do i get needed files?
-Just go to the "Actions" tab, open most recent build and download files named **rootfs_(Desktop Environment)_(Kernel version)** and **boot-oneplus-aston_(Kernel version)_(Phone RAM Size)G_A(Android Version).img**
+Just go to the "Actions" tab, open most recent build and download files named **rootfs_(Desktop Environment)_(Kernel version)_A(Android Version)** and **boot-oneplus-aston_(Kernel version)_(Phone RAM Size)G_A(Android Version).img**
 <br>For upgrading - instead, download all files available, **except for rootfs**
 
 ## Upgrading steps (From running Ubuntu)
