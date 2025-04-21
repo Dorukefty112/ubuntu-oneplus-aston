@@ -6,6 +6,7 @@ on:
 jobs:
   kernel:
     runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
     strategy:
             matrix:
                 version: [6.14]
@@ -44,6 +45,7 @@ jobs:
 
   rootfs:
     runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
@@ -65,6 +67,7 @@ jobs:
   alsa:
     needs: rootfs
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
 
@@ -80,6 +83,7 @@ jobs:
   firmware-a15:
     needs: rootfs
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
 
@@ -98,6 +102,7 @@ jobs:
   firmware-a14:
     needs: rootfs
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - uses: actions/checkout@v4
 
@@ -114,8 +119,9 @@ jobs:
           path: ${{ github.workspace }}/firmware-oneplus-aston-a14.deb
 
   rootfs-packager:
-    runs-on: ubuntu-24.04-arm
     needs: [kernel, alsa, firmware-a14, firmware-a15]
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
