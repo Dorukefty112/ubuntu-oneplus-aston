@@ -25,10 +25,25 @@ This project is a fork of [jiganomegsdfdf/ubuntu-oneplus-aston](https://github.c
 - A/B slot dualboot (manual switching via fastboot)
 - Bluetooth (basic)
 
-### Not Working / Untested
-- Modem / SMS / Calls (WIP — no fix yet)
-- Automatic dualboot switching
-- Suspend / Resume
+### Known Bugs & Limitations
+
+**Boot reliability**
+- Ubuntu often fails to boot from cold boot (returns to fastboot). Success rate ~30% on normal boot.
+- **Workaround**: Flash Ubuntu boot image to `boot_b`, then boot via recovery mode or `fastboot boot boot.img`. Sometimes 2-3 power cycles are needed.
+- Root cause suspected: boot image header incompatibility with OnePlus bootloader, or slot metadata mismatch.
+
+**Modem / SMS / Calls**
+- Modem firmware loads but no network registration. ADSP and modem DSP communication partially broken.
+- `qrtr-ns` sees the modem but `mbim`/`qmi` tools can't establish session.
+
+**Dualboot**
+- No automatic switching — must use `fastboot set_active a/b` manually.
+- Switching slots sometimes corrupts BCB (Bootloader Control Block) in `misc` partition, causing bootloop. Fix: `dd if=/dev/zero of=/dev/block/by-name/misc`.
+
+**Suspend / Resume**
+- Suspend kills WiFi and display doesn't wake. Requires hard reboot.
+
+**Other**
 - Camera
 - GPS
 - NFC
