@@ -1,0 +1,7 @@
+*.img
+*.deb
+*.7z
+*.tar.gz
+pil-squasher/
+flash_files/
+rootdir/

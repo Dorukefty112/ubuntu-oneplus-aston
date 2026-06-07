@@ -1,5 +1,4 @@
 #!/bin/sh
-VERSION="25.04"
 
 cd $2
 
@@ -8,8 +7,8 @@ mkfs.ext4 rootfs.img
 mkdir rootdir
 mount -o loop rootfs.img rootdir
 
-wget https://cdimage.ubuntu.com/ubuntu-base/releases/$VERSION/release/ubuntu-base-$VERSION-base-arm64.tar.gz
-tar xzvf ubuntu-base-$VERSION-base-arm64.tar.gz -C rootdir
+wget https://cdimage.ubuntu.com/ubuntu-base/daily/current/stonking-base-arm64.tar.gz -O ubuntu-base-arm64.tar.gz
+tar xzvf ubuntu-base-arm64.tar.gz -C rootdir
 
 mkdir -p rootdir/data/local/tmp
 mount --bind /dev rootdir/dev

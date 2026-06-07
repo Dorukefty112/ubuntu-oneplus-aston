@@ -1,44 +1,116 @@
-<img align="right" src="ubnt.png" width="305" alt="Ubuntu 24.10 Running On A OnePlus Ace 3">
+<img align="right" src="ubnt.png" width="305" alt="Ubuntu 26.04 Running On A OnePlus 12R">
 
-# Ubuntu for OnePlus 12R/Ace 3
-This repo contians **Base Guide for installation/upgrading** and **Scripts for automatic building of Ubuntu RootFS, Mainline Kernel, Firmware package, ALSA configs** for OnePlus 12R/Ace 3
+# Ubuntu for OnePlus 12R / Ace 3 (aston)
 
-### [**Project status**](https://github.com/users/jiganomegsdfdf/projects/3/views/1)
+> ⚠️ **DISCLAIMER**: This project is provided as-is, without any warranty. The authors are not responsible for any damage, data loss, or voided warranties. Use at your own risk.
+> 
+> This build was produced by an **AI agent** (opencode/big-pickle). Human involvement was limited to following instructions and providing device access.
 
-# Where do I get the needed files?
-Just go to the "Actions" tab, open the latest build and download files named **rootfs_(Desktop Environment)_(Kernel version)_A(Android Version)** and **boot-oneplus-aston_(Kernel version)_(Phone RAM Size)G_A(Android Version).img**
-<br>For upgrading - download all available files, **except for rootfs**
+## Credits
 
-## Upgrading steps (From running Ubuntu)
-- Unpack all the .zip files you downloaded into one folder
-- Open terminal and go to the folder where you unpacked all .zip files into
-- Run "sudo dpkg -i *-oneplus-aston.deb"
-- If you use flashing instead of **fastboot boot**: flash a new boot image using "dd if="**path to boot.img**" of=/dev/disk/by-partlabel/boot_**('a' or 'b')**"
-- Reboot using new image
+This project is a fork of [jiganomegsdfdf/ubuntu-oneplus-aston](https://github.com/jiganomegsdfdf/ubuntu-oneplus-aston) — massive thanks to the original developer for the kernel, firmware squashing, and ALSA work.
 
-### Partitioning steps using "parted", where text inside () is a command to execute
-⚠️**New partition should be at least 5GB in size for rootfs.img to fit in**
-<br>⚠️**You will lose all your android data**
- - Download parted executable from the "Releases" tab
- - Reboot to TWRP recovery and push the downloaded file to /tmp <br>(**adb push parted /tmp**)
- - Access phone shell <br>(**adb shell**)
- - Grant execute permission and open parted for further steps<br>(**chmod +x /tmp/parted && /tmp/parted /dev/block/sda**)
- - Look at the partitions and remember "Number", "Start" "End" for "userdata" partition <br>(**print**)
- - Remove the "userdata" partition <br>(**rm "Number"**)
- - Create a new "userdata" partition <br>(**mkpart userdata f2fs "Start" "*End - size that you want to allocate for Ubuntu install*"**)
- - Create a new "win" partition <br>(**mkpart win ntfs "*End - size that you want to allocate for Ubuntu install*" "End"**)
- - Reboot back to recovery
- - Format the new "userdata" using TWRP format data function
- - Format the new "win" partition <br>(**mkfs.ext4 /dev/block/by-name/win**)
-  
-## Install steps
-- You should have custom partitions, follow "Partitioning steps..."
-- Unpack .zip files you downloaded
-- Unpack extracted rootfs.7z
-- rootfs.img must be flashed to the partition named "win"
-<br>⚠️**USE "dd if="path to rootfs.img" of=/dev/block/by-name/win"
-<br>  FLASHING USING FASTBOOT RESULTS IN BROKEN UBUNTU FILESYSTEM**
-- Flash (or **fastboot boot**) boot.img that you got from boot archive
+## Status
+
+### Working
+- Ubuntu 26.04 (Stonking) with GNOME Desktop
+- Kernel 6.14.0-sm8550 (mainline)
+- WiFi (ath12k)
+- SSH over WiFi
+- GPU acceleration (A740)
+- Touchscreen
+- HiDPI scaling
+- USB networking (RNDIS)
+- ALSA sound
+- A/B slot dualboot (manual switching via fastboot)
+- Bluetooth (basic)
+
+### Not Working / Untested
+- Modem / SMS / Calls (WIP — no fix yet)
+- Automatic dualboot switching
+- Suspend / Resume
+- Camera
+- GPS
+- NFC
+- Fingerprint sensor
+
+## Prerequisites
+
+- OnePlus 12R / Ace 3 (CPH2609, codename "aston")
+- Unlocked bootloader
+- TWRP recovery installed (can be on `recovery` or patched `init_boot`)
+- ADB & Fastboot on your PC
+- Enough free space (~70 GB recommended for Ubuntu)
+
+## Partition Layout (Dualboot)
+
+| Partition | Size | Filesystem | Content |
+|-----------|------|------------|---------|
+| `super` | 16.6 GB | - | Android system |
+| `userdata` | ~164 GB | f2fs | Android data |
+| `win` | ~70 GB | ext4 | Ubuntu rootfs |
+
+- **Slot A**: Android (untouched system partitions)
+- **Slot B**: Ubuntu (separate `boot_b` + `win` partition)
+
+Switch between OS with:
+```
+fastboot set_active a  # Android
+fastboot set_active b  # Ubuntu
+fastboot reboot
+```
+
+## Installation
+
+### 1. Repartition (WARNING: wipes Android data)
+Use `parted` in TWRP:
+```
+adb push parted /tmp
+adb shell
+chmod +x /tmp/parted
+/tmp/parted /dev/block/sda
+print               # note userdata start/end
+rm <userdata_num>   # delete userdata
+mkpart userdata f2fs <start> <new_end>
+mkpart win ext4 <new_end> <original_end>
+quit
+```
+Then format:
+- Format userdata as f2fs in TWRP
+- `mkfs.ext4 /dev/block/by-name/win`
+
+### 2. Flash rootfs
+```
+adb push rootfs.img /tmp/   # needs ~7 GB free in /tmp
+adb shell dd if=/tmp/rootfs.img of=/dev/block/by-name/win
+```
+
+### 3. Flash boot image
+```
+adb shell dd if=/tmp/boot.img of=/dev/block/by-name/boot_b
+```
+
+### 4. Boot Ubuntu
+```
+fastboot set_active b
+fastboot reboot
+```
+
+## Switching Back to Android
+```
+fastboot set_active a
+fastboot reboot
+```
+First boot after wipe will show setup wizard.
+
+## Building from Source
+Run the scripts in order:
+```
+./aston-kernel_build.sh      # builds kernel, boot.img, linux .deb
+./aston-fw_squasher-a14.sh   # builds firmware .deb
+./aston-rootfs_build.sh      # builds rootfs.img
+./aston-rootfs_package.sh    # installs .deb packages into rootfs
+```
   
 
 
