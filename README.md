@@ -12,42 +12,7 @@ This project is a fork of [jiganomegsdfdf/ubuntu-oneplus-aston](https://github.c
 
 ## Status
 
-### Working
-- Ubuntu 26.04 (Stonking) with GNOME Desktop
-- Kernel 6.14.0-sm8550 (mainline)
-- WiFi (ath12k)
-- SSH over WiFi
-- GPU acceleration (A740)
-- Touchscreen
-- HiDPI scaling
-- USB networking (RNDIS)
-- ALSA sound
-- A/B slot dualboot (manual switching via fastboot)
-- Bluetooth (basic)
-
-### Known Bugs & Limitations
-
-**Boot reliability**
-- Ubuntu often fails to boot from cold boot (returns to fastboot). Success rate ~30% on normal boot.
-- **Workaround**: Flash Ubuntu boot image to `boot_b`, then boot via recovery mode or `fastboot boot boot.img`. Sometimes 2-3 power cycles are needed.
-- Root cause suspected: boot image header incompatibility with OnePlus bootloader, or slot metadata mismatch.
-
-**Modem / SMS / Calls**
-- Modem firmware loads but no network registration. ADSP and modem DSP communication partially broken.
-- `qrtr-ns` sees the modem but `mbim`/`qmi` tools can't establish session.
-
-**Dualboot**
-- No automatic switching — must use `fastboot set_active a/b` manually.
-- Switching slots sometimes corrupts BCB (Bootloader Control Block) in `misc` partition, causing bootloop. Fix: `dd if=/dev/zero of=/dev/block/by-name/misc`.
-
-**Suspend / Resume**
-- Suspend kills WiFi and display doesn't wake. Requires hard reboot.
-
-**Other**
-- Camera
-- GPS
-- NFC
-- Fingerprint sensor
+⚠️ **No dualboot yet** — only Ubuntu on slot B works. Slot A is not restored.
 
 ## Prerequisites
 
@@ -57,7 +22,7 @@ This project is a fork of [jiganomegsdfdf/ubuntu-oneplus-aston](https://github.c
 - ADB & Fastboot on your PC
 - Enough free space (~70 GB recommended for Ubuntu)
 
-## Partition Layout (Dualboot)
+## Partition Layout
 
 | Partition | Size | Filesystem | Content |
 |-----------|------|------------|---------|
@@ -65,15 +30,8 @@ This project is a fork of [jiganomegsdfdf/ubuntu-oneplus-aston](https://github.c
 | `userdata` | ~164 GB | f2fs | Android data |
 | `win` | ~70 GB | ext4 | Ubuntu rootfs |
 
-- **Slot A**: Android (untouched system partitions)
-- **Slot B**: Ubuntu (separate `boot_b` + `win` partition)
-
-Switch between OS with:
-```
-fastboot set_active a  # Android
-fastboot set_active b  # Ubuntu
-fastboot reboot
-```
+- **Slot B**: Ubuntu (uses `boot_b` + `win` partition)
+- **Slot A**: Currently broken (needs stock firmware restore)
 
 ## Installation
 
