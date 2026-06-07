@@ -104,10 +104,31 @@ fastboot reboot
 First boot after wipe will show setup wizard.
 
 ## Building from Source
+
+### Firmware Extraction
+Firmware blobs are not included in the repo (some exceed GitHub's 100 MB limit).
+Use the extraction script to get them from your device or stock firmware:
+
+```
+# Option 1: Extract from device via ADB (phone must be booted with root)
+./extract-firmware.sh --device -a 14
+
+# Option 2: Extract from stock OxygenOS ZIP
+./extract-firmware.sh --zip ~/Downloads/OnePlus-12R-CPH2609.zip -a 14
+
+# Option 3: Use an already-extracted firmware directory
+./extract-firmware.sh --firmware-dir ~/firmware_dump -a 14
+
+# For Android 15 (ColorOS 15), use -a 15 instead
+```
+
+This builds `firmware-oneplus-aston-a14.deb` (or a15).
+
+### Build Pipeline
 Run the scripts in order:
 ```
 ./aston-kernel_build.sh      # builds kernel, boot.img, linux .deb
-./aston-fw_squasher-a14.sh   # builds firmware .deb
+./aston-fw_squasher-a14.sh   # or use extract-firmware.sh instead
 ./aston-rootfs_build.sh      # builds rootfs.img
 ./aston-rootfs_package.sh    # installs .deb packages into rootfs
 ```
