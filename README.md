@@ -1,29 +1,13 @@
 ```
-╔═══════════════════════════════════════════════════════════════════════════════════════╗
-║                     ⚠️  TERMONÜKLEER UYARI  ⚠️                              ║
-║                                                                              ║
-║  Bu projeyi kullanarak aşağıdaki riskleri kabul etmiş sayılırsınız:          ║
-║                                                                              ║
-║  • 📱 Telefonunuzun tuğlaya dönmesi (brick)                                 ║
-║  • 💾 Tüm verilerinizin silinmesi                                            ║
-║  • 🔥 Termonükleer savaş çıkması                                             ║
-║  • ⏰ Alarm çalmadığı için işten kovulmanız                                  ║
-║  • 💳 Garantinizin tamamen geçersiz kalması                                  ║
-║  • 👻 Telefonunuzun hayalet dosyalarla dolması                               ║
-║  • 🚗 Arabayla giderken cihazınızın kendi kendine reboot atması              ║
-║  • ☕ Kahvenizin soğuması                                                    ║
-║                                                                              ║
-║  BU PROJEYİ KULLANARAK YAPTIĞINIZ TÜM DEĞİŞİKLİKLERİN SORUMLULUĞU           ║
-║  TAMAMEN SİZE AİTTİR.                                                        ║
-║                                                                              ║
-║  Eğer cihazınızı mahvederseniz, parmağınızı bize doğrultup                    ║
-║  suçlamaya kalkarsanız, sadece güleriz. 😂                                   ║
-║                                                                              ║
-║  Yeterli araştırmayı yapmadan, ne yaptığınızı bilmeden,                       ║
-║  bu işlemlere BAŞLAMAYIN.                                                    ║
-║                                                                              ║
-║  YOU HAVE BEEN WARNED.                                                       ║
-╚═══════════════════════════════════════════════════════════════════════════════════════╝
+/*
+ * Your warranty is now void.
+ *
+ * I am not responsible for bricked devices, dead SD cards,
+ * thermonuclear war, or you getting fired because the alarm app failed. Please
+ * do some research if you have any concerns about features included in this ROM
+ * before flashing it! YOU are choosing to make these modifications, and if
+ * you point the finger at me for messing up your device, I will laugh at you.
+ */
 ```
 
 <img align="right" src="ubnt.png" width="305" alt="Ubuntu 26.04 Running On A OnePlus 12R">
