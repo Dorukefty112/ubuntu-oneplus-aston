@@ -1,3 +1,31 @@
+```
+╔═══════════════════════════════════════════════════════════════════════════════════════╗
+║                     ⚠️  TERMONÜKLEER UYARI  ⚠️                              ║
+║                                                                              ║
+║  Bu projeyi kullanarak aşağıdaki riskleri kabul etmiş sayılırsınız:          ║
+║                                                                              ║
+║  • 📱 Telefonunuzun tuğlaya dönmesi (brick)                                 ║
+║  • 💾 Tüm verilerinizin silinmesi                                            ║
+║  • 🔥 Termonükleer savaş çıkması                                             ║
+║  • ⏰ Alarm çalmadığı için işten kovulmanız                                  ║
+║  • 💳 Garantinizin tamamen geçersiz kalması                                  ║
+║  • 👻 Telefonunuzun hayalet dosyalarla dolması                               ║
+║  • 🚗 Arabayla giderken cihazınızın kendi kendine reboot atması              ║
+║  • ☕ Kahvenizin soğuması                                                    ║
+║                                                                              ║
+║  BU PROJEYİ KULLANARAK YAPTIĞINIZ TÜM DEĞİŞİKLİKLERİN SORUMLULUĞU           ║
+║  TAMAMEN SİZE AİTTİR.                                                        ║
+║                                                                              ║
+║  Eğer cihazınızı mahvederseniz, parmağınızı bize doğrultup                    ║
+║  suçlamaya kalkarsanız, sadece güleriz. 😂                                   ║
+║                                                                              ║
+║  Yeterli araştırmayı yapmadan, ne yaptığınızı bilmeden,                       ║
+║  bu işlemlere BAŞLAMAYIN.                                                    ║
+║                                                                              ║
+║  YOU HAVE BEEN WARNED.                                                       ║
+╚═══════════════════════════════════════════════════════════════════════════════════════╝
+```
+
 <img align="right" src="ubnt.png" width="305" alt="Ubuntu 26.04 Running On A OnePlus 12R">
 
 # Ubuntu for OnePlus 12R / Ace 3 (aston)
@@ -105,6 +133,3 @@ Run the scripts in order:
 ./aston-rootfs_build.sh      # builds rootfs.img
 ./aston-rootfs_package.sh    # installs .deb packages into rootfs
 ```
-  
-
-
