@@ -1,22 +1,33 @@
-```
-/*
- * Your warranty is now void.
- *
- * I am not responsible for bricked devices, dead SD cards,
- * thermonuclear war, or you getting fired because the alarm app failed. Please
- * do some research if you have any concerns about features included in this ROM
- * before flashing it! YOU are choosing to make these modifications, and if
- * you point the finger at me for messing up your device, I will laugh at you.
- */
-```
-
 <img align="right" src="ubnt.png" width="305" alt="Ubuntu 26.04 Running On A OnePlus 12R">
 
 # Ubuntu for OnePlus 12R / Ace 3 (aston)
 
-> ⚠️ **DISCLAIMER**: This project is provided as-is, without any warranty. The authors are not responsible for any damage, data loss, or voided warranties. Use at your own risk.
-> 
-> This build was produced by an **AI agent** (opencode/big-pickle). Human involvement was limited to following instructions and providing device access.
+> ```c
+> /*
+>  *  ⚠️  DISCLAIMER
+>  *  ===============
+>  *  
+>  *  Your warranty is now void.
+>  *  
+>  *  I am not responsible for bricked devices, dead SD cards,
+>  *  thermonuclear war, or you getting fired because the alarm app
+>  *  failed. Please do some research if you have any concerns about
+>  *  features included in this ROM before flashing it!
+>  *  YOU are choosing to make these modifications, and if
+>  *  you point the finger at me for messing up your device,
+>  *  I will laugh at you.
+>  *  
+>  *  ---
+>  *  
+>  *  This project is provided as-is, without any warranty.
+>  *  The authors are not responsible for any damage, data loss,
+>  *  or voided warranties. Use at your own risk.
+>  *  
+>  *  This build was produced by an AI agent (opencode/big-pickle).
+>  *  Human involvement was limited to following instructions
+>  *  and providing device access.
+>  */
+> ```
 
 ## Credits
 
