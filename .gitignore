@@ -1,9 +1,9 @@
-*.img
 *.deb
 *.7z
 *.tar.gz
-pil-squasher/
+rootfs.img
 flash_files/
+pil-squasher/
 rootdir/
 firmware-oneplus-aston-a14/
 firmware-oneplus-aston-a15/

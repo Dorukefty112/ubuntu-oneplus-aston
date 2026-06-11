@@ -33,98 +33,106 @@
 
 This project is a fork of [jiganomegsdfdf/ubuntu-oneplus-aston](https://github.com/jiganomegsdfdf/ubuntu-oneplus-aston) — massive thanks to the original developer for the kernel, firmware squashing, and ALSA work.
 
-## Status
-
-⚠️ **No dualboot yet** — only Ubuntu on slot B works. Slot A is not restored.
-
 ## Prerequisites
 
 - OnePlus 12R / Ace 3 (CPH2609, codename "aston")
 - Unlocked bootloader
-- TWRP recovery installed (can be on `recovery` or patched `init_boot`)
+- TWRP recovery installed
 - ADB & Fastboot on your PC
 - Enough free space (~70 GB recommended for Ubuntu)
 
-## Partition Layout
+## Dualboot Setup
 
-| Partition | Size | Filesystem | Content |
-|-----------|------|------------|---------|
-| `super` | 16.6 GB | - | Android system |
-| `userdata` | ~164 GB | f2fs | Android data |
-| `win` | ~70 GB | ext4 | Ubuntu rootfs |
-
-- **Slot B**: Ubuntu (uses `boot_b` + `win` partition)
-- **Slot A**: Currently broken (needs stock firmware restore)
-
-## Installation
+This guide sets up **Android on slot A** and **Ubuntu on slot B**. You switch between them with `fastboot set_active a/b`.
 
 ### 1. Repartition (WARNING: wipes Android data)
-Use `parted` in TWRP:
+
+Enter TWRP and use `parted`:
+
 ```
 adb push parted /tmp
 adb shell
 chmod +x /tmp/parted
 /tmp/parted /dev/block/sda
-print               # note userdata start/end
-rm <userdata_num>   # delete userdata
-mkpart userdata f2fs <start> <new_end>
-mkpart win ext4 <new_end> <original_end>
+print
+rm <userdata_partition_number>
+mkpart userdata f2fs 17GB 181GB
+mkpart win ext4 181GB 251GB
 quit
 ```
-Then format:
-- Format userdata as f2fs in TWRP
+
+Format:
+- Format `userdata` as f2fs in TWRP
 - `mkfs.ext4 /dev/block/by-name/win`
 
-### 2. Flash rootfs
-```
-adb push rootfs.img /tmp/   # needs ~7 GB free in /tmp
-adb shell dd if=/tmp/rootfs.img of=/dev/block/by-name/win
-```
+### 2. Flash Ubuntu
 
-### 3. Flash boot image
-```
-adb shell dd if=/tmp/boot.img of=/dev/block/by-name/boot_b
-```
+From bootloader mode:
 
-### 4. Boot Ubuntu
 ```
+# Flash rootfs
+fastboot flash win rootfs.img
+
+# Disable boot verification on slot B
+fastboot flash vbmeta_b vbmeta_b_disabled.img
+
+# Flash boot image to slot B
+fastboot flash boot_b boot16G_A14.img
+
+# Boot Ubuntu
 fastboot set_active b
 fastboot reboot
 ```
 
-## Switching Back to Android
+### 3. Switch Between OS
+
 ```
-fastboot set_active a
+fastboot set_active a    # Android
+fastboot set_active b    # Ubuntu
 fastboot reboot
 ```
-First boot after wipe will show setup wizard.
+
+### Troubleshooting
+
+**Ubuntu doesn't boot from slot B**
+Try with `fastboot boot boot16G_A14.img`. If that works but flash doesn't, re-flash `vbmeta_b_disabled.img`.
+
+**Bootloop after switching slots**
+Clear BCB in misc partition:
+```
+adb shell dd if=/dev/zero of=/dev/block/by-name/misc
+```
+
+**Ubuntu boots once then stops**
+Try 2-3 power cycles. Some boot image header combinations are picky.
 
 ## Building from Source
 
 ### Firmware Extraction
+
 Firmware blobs are not included in the repo (some exceed GitHub's 100 MB limit).
-Use the extraction script to get them from your device or stock firmware:
 
 ```
-# Option 1: Extract from device via ADB (phone must be booted with root)
+# Extract from device via ADB (root required)
 ./extract-firmware.sh --device -a 14
 
-# Option 2: Extract from stock OxygenOS ZIP
+# Extract from stock OxygenOS ZIP
 ./extract-firmware.sh --zip ~/Downloads/OnePlus-12R-CPH2609.zip -a 14
 
-# Option 3: Use an already-extracted firmware directory
-./extract-firmware.sh --firmware-dir ~/firmware_dump -a 14
-
-# For Android 15 (ColorOS 15), use -a 15 instead
+# For Android 15, use -a 15
 ```
-
-This builds `firmware-oneplus-aston-a14.deb` (or a15).
 
 ### Build Pipeline
-Run the scripts in order:
+
 ```
-./aston-kernel_build.sh      # builds kernel, boot.img, linux .deb
+./aston-kernel_build.sh      # kernel → boot.img, linux.deb
 ./aston-fw_squasher-a14.sh   # or use extract-firmware.sh instead
-./aston-rootfs_build.sh      # builds rootfs.img
-./aston-rootfs_package.sh    # installs .deb packages into rootfs
+./aston-rootfs_build.sh      # rootfs.img
+./aston-rootfs_package.sh    # install debs into rootfs
+```
+
+### Quick Setup Script
+
+```
+./setup-dualboot.sh --flash -a 14
 ```
