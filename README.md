@@ -26,8 +26,20 @@
 >  *  This build was produced by an AI agent (opencode/big-pickle).
 >  *  Human involvement was limited to following instructions
 >  *  and providing device access.
+>  *
+>  *  CRITICAL DUAL-BOOT WARNING:
+>  *  While Ubuntu is installed on slot B, NEVER flash an Android version
+>  *  newer than Android 14 to slot A. If a newer Android release has
+>  *  already been flashed to slot A, do NOT switch back to slot B.
+>  *  Wipe/re-provision slot B before attempting any further boot there.
 >  */
 > ```
+
+## Project Status
+
+> **⏸️ Long-term pause — no new commits are expected for the foreseeable future.**
+>
+> The maintainer's OnePlus 12R could not be recovered after a hard brick. This repository remains available as an archive and technical reference, but it is **not actively maintained** and should not be treated as a supported installation path.
 
 ## Credits
 
